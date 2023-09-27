@@ -9,5 +9,8 @@
         "sourceType": "module"
     },
     "rules": {
+        "@typescript-eslint/method-signature-style": "off",
+        "@typescript-eslint/consistent-type-imports": "off",
+        "no-useless-return": "off"
     }
 }
