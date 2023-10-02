@@ -2,6 +2,7 @@ import { Slug } from './value-objects/slug'
 import { Entity } from '../../core/entities/entity'
 import { UniqueEntityID } from '../../core/entities/unique-entity-id'
 import { Optional } from '../../core/types/optional'
+import dayjs from 'dayjs'
 
 interface QuestionProps {
   authorId: UniqueEntityID
@@ -14,9 +15,66 @@ interface QuestionProps {
 }
 
 export class Question extends Entity<QuestionProps> {
-  static create (props: Optional<QuestionProps, 'createdAt'>, id?: UniqueEntityID): Question {
+  get authorId (): UniqueEntityID {
+    return this.props.authorId
+  }
+
+  get bestAnswerId (): UniqueEntityID | undefined {
+    return this.props.bestAnswerId
+  }
+
+  set bestAnswerId (bestAnswerId: UniqueEntityID | undefined) {
+    this.props.bestAnswerId = bestAnswerId
+    this.touch()
+  }
+
+  get title (): string {
+    return this.props.title
+  }
+
+  set title (title: string) {
+    this.props.title = title
+    this.props.slug = Slug.createFromText(title)
+    this.touch()
+  }
+
+  get slug (): Slug {
+    return this.props.slug
+  }
+
+  get createdAt (): Date {
+    return this.props.createdAt
+  }
+
+  get updatedAt (): Date | undefined {
+    return this.props.updatedAt
+  }
+
+  get content (): string {
+    return this.props.content
+  }
+
+  set content (content: string) {
+    this.props.content = content
+    this.touch()
+  }
+
+  get isNew (): boolean {
+    return dayjs().diff(this.createdAt, 'days') <= 3
+  }
+
+  get excerpt (): string {
+    return this.content.substring(0, 120).trim().concat('...')
+  }
+
+  private touch (): void {
+    this.props.updatedAt = new Date()
+  }
+
+  static create (props: Optional<QuestionProps, 'createdAt' | 'slug'>, id?: UniqueEntityID): Question {
     const question = new Question({
       ...props,
+      slug: props.slug ?? Slug.createFromText(props.title),
       createdAt: new Date()
     }, id)
 
