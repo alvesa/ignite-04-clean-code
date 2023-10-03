@@ -11,44 +11,50 @@ interface AnswerProps {
 }
 
 export class Answer extends Entity<AnswerProps> {
-  get content (): string {
+  get content(): string {
     return this.props.content
   }
 
-  set content (content: string) {
+  set content(content: string) {
     this.props.content = content
     this.touch()
   }
 
-  get authorId (): UniqueEntityID {
+  get authorId(): UniqueEntityID {
     return this.props.authorId
   }
 
-  get questionId (): UniqueEntityID {
+  get questionId(): UniqueEntityID {
     return this.props.questionId
   }
 
-  get createdAt (): Date {
+  get createdAt(): Date {
     return this.props.createdAt
   }
 
-  get updatedAt (): Date | undefined {
+  get updatedAt(): Date | undefined {
     return this.props.updatedAt
   }
 
-  get excerpt (): string {
+  get excerpt(): string {
     return this.content.substring(0, 120).trim().concat('...')
   }
 
-  private touch (): void {
+  private touch(): void {
     this.props.updatedAt = new Date()
   }
 
-  static create (props: Optional<AnswerProps, 'createdAt'>, id?: UniqueEntityID): Answer {
-    const answer = new Answer({
-      ...props,
-      createdAt: new Date()
-    }, id)
+  static create(
+    props: Optional<AnswerProps, 'createdAt'>,
+    id?: UniqueEntityID,
+  ): Answer {
+    const answer = new Answer(
+      {
+        ...props,
+        createdAt: new Date(),
+      },
+      id,
+    )
 
     return answer
   }
