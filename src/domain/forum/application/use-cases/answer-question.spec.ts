@@ -17,8 +17,6 @@ describe('Create Question', () => {
       content: 'Conteudo da resposta',
     })
 
-    console.log(inMemoryAnswerRepository.items)
-
     expect(answer.id).toBeTruthy()
     expect(inMemoryAnswerRepository.items[0].id).toEqual(answer.id)
   })
