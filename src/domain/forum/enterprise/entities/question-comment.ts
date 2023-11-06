@@ -7,7 +7,7 @@ export interface QuestionCommentProps extends CommentProps {
 }
 
 export class QuestionComment extends Comment<QuestionCommentProps> {
-  get commentId(): UniqueEntityID {
+  get questionId(): UniqueEntityID {
     return this.props.questionId
   }
 
